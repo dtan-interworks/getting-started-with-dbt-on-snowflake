@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- Tasty Bytes dbt Demo: Environment Setup & Source Data
 -- Source: https://docs.snowflake.com/en/user-guide/tutorials/dbt-projects-on-snowflake-getting-started-tutorial
@@ -31,7 +32,7 @@ USE ROLE ACCOUNTADMIN;
 -- Alternatively, you can use an existing warehouse in your account.
 -- =============================================================================
 
-CREATE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = XLARGE AUTO_SUSPEND = 60;
+-- CREATE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = XLARGE AUTO_SUSPEND = 60;
 
 -- =============================================================================
 -- STEP 2: Create a database and schemas for integrations and model materializations
@@ -40,11 +41,11 @@ CREATE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = XLARGE AUTO_SUSPEND = 60;
 -- The RAW schema holds the Tasty Bytes foundational source data.
 -- =============================================================================
 
-CREATE DATABASE IF NOT EXISTS tasty_bytes_dbt_db;
-CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.dev;
-CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.prod;
+-- CREATE DATABASE IF NOT EXISTS tasty_bytes_dbt_db;
+-- CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.dev;
+-- CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.prod;
 -- Used for storing objects Snowflake needs for GitHub integration (secrets, etc.)
-CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.integrations;
+-- CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.integrations;
 -- Used for the Tasty Bytes foundational source data loaded from S3
 CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.raw;
 
@@ -78,22 +79,22 @@ ALTER SCHEMA tasty_bytes_dbt_db.prod SET METRIC_LEVEL = 'ALL';
 -- See: https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces-git
 -- =============================================================================
 
-USE tasty_bytes_dbt_db.integrations;
-CREATE OR REPLACE SECRET tasty_bytes_dbt_db.integrations.tb_dbt_git_secret
-  TYPE = password
-  USERNAME = 'your-gh-username'
-  PASSWORD = 'YOUR_PERSONAL_ACCESS_TOKEN';
+-- USE tasty_bytes_dbt_db.integrations;
+-- CREATE OR REPLACE SECRET tasty_bytes_dbt_db.integrations.tb_dbt_git_secret
+--   TYPE = password
+--   USERNAME = 'your-gh-username'
+--   PASSWORD = 'YOUR_PERSONAL_ACCESS_TOKEN';
 
 -- Replace 'https://github.com/my-github-account' with the URL of the GitHub
 -- account for your forked repository.
 -- This API integration is used when creating a workspace in Snowsight (Projects > Workspaces)
 -- to connect Snowflake to your forked GitHub repository.
-CREATE OR REPLACE API INTEGRATION tb_dbt_git_api_integration
-  API_PROVIDER = git_https_api
-  API_ALLOWED_PREFIXES = ('https://github.com/my-github-account')
-  -- Comment out the following line if your forked repository is public
-  ALLOWED_AUTHENTICATION_SECRETS = (tasty_bytes_dbt_db.integrations.tb_dbt_git_secret)
-  ENABLED = TRUE;
+-- CREATE OR REPLACE API INTEGRATION tb_dbt_git_api_integration
+--   API_PROVIDER = git_https_api
+--   API_ALLOWED_PREFIXES = ('https://github.com/my-github-account')
+--   -- Comment out the following line if your forked repository is public
+--   ALLOWED_AUTHENTICATION_SECRETS = (tasty_bytes_dbt_db.integrations.tb_dbt_git_secret)
+--   ENABLED = TRUE;
 
 -- =============================================================================
 -- STEP 5: (Optional) Create a network rule and external access integration
@@ -316,7 +317,7 @@ FROM @tasty_bytes_dbt_db.public.s3load/raw_pos/order_detail/;
 -- SMALL is sufficient for compiling, running, and scheduling the dbt project.
 -- =============================================================================
 
-ALTER WAREHOUSE tasty_bytes_dbt_wh SET WAREHOUSE_SIZE = SMALL;
+-- ALTER WAREHOUSE tasty_bytes_dbt_wh SET WAREHOUSE_SIZE = SMALL;
 
 -- =============================================================================
 -- Setup complete
