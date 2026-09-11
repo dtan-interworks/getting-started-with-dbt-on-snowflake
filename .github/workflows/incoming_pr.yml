@@ -28,6 +28,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Install dbt and required dependencies 
+        run: |
+          pip install 'dbt-core==1.11.*'
+          dbt deps
+
       - name: Install Snowflake CLI
         uses: snowflakedb/snowflake-actions@v3
         with: # Ensures Snowflake CLI will search for OIDC users matching this subject
