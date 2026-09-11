@@ -28,6 +28,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Install dbt and resolve dependencies
+        run: |
+          pip install 'dbt-core==1.11.*'
+          cd ./tasty_bytes_dbt_demo && dbt deps
+
       - name: Install Snowflake CLI
         uses: snowflakedb/snowflake-actions@v3
         with: # Ensures Snowflake CLI will search for OIDC users matching this subject
@@ -38,9 +43,6 @@ jobs:
 
       # The -x is shorthand for --temporary-connection
       - run: snow connection test -x
-
-      - name: Install dbt package dependencies
-        run: cd ./tasty_bytes_dbt_demo && snow dbt deps
 
       # The --force setting creates the object or updates it if it already exists
       # You can remove the "--source" flag if your dbt_project.yml is at root of your repo
