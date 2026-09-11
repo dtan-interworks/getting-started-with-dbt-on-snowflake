@@ -40,7 +40,7 @@ jobs:
       - run: snow connection test -x
 
       - name: Install dbt package dependencies
-        run: cd ./tasty_bytes_dbt_demo && dbt deps
+        run: cd ./tasty_bytes_dbt_demo && snow dbt deps
 
       # The --force setting creates the object or updates it if it already exists
       # You can remove the "--source" flag if your dbt_project.yml is at root of your repo
