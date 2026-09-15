@@ -39,12 +39,16 @@ CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.prod;
 
 -- Recommended: OIDC-based service user
 -- This approach uses OpenID Connect (OIDC) rather than long-lived credentials.
+-- The SUBJECT value must exactly match the GitHub OIDC `sub` claim emitted for your
+-- repository and environment. This repository currently uses GitHub's id-based subject
+-- format, so the prod environment claim is:
+--   repo:dtan-interworks@274987838/getting-started-with-dbt-on-snowflake@1354362565:environment:prod
 CREATE USER IF NOT EXISTS github_actions_service_user
   TYPE = SERVICE
   WORKLOAD_IDENTITY = (
     TYPE = OIDC
     ISSUER = 'https://token.actions.githubusercontent.com',
-    SUBJECT = 'repo:your_repo_org/your_dbt_repo:environment:prod'
+    SUBJECT = 'repo:dtan-interworks@274987838/getting-started-with-dbt-on-snowflake@1354362565:environment:prod'
   )
   DEFAULT_ROLE = ACCOUNTADMIN
   COMMENT = 'Service user for GitHub Actions';
